@@ -1,5 +1,7 @@
 package cl.duoc.dej.adopciones;
 
+import java.util.Calendar;
+
 /**
  *
  * @author Santiago Neira <sant.neira@profesor.duoc.cl>
@@ -10,30 +12,31 @@ public class Animal {
     private String nombre;
     private String tipo;
     private String genero;
-    private int edad;
+    private Calendar fechaNacimiento;
+    private Calendar fechaCreacion = Calendar.getInstance();
     private boolean adoptado = false;
 
     public Animal() {
     }
 
-    public Animal(String nombre, String tipo, String genero, int edad) {
+    public Animal(String nombre, String tipo, String genero, Calendar fechaNacimiento) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.genero = genero;
-        this.edad = edad;
+        this.fechaNacimiento = fechaNacimiento;
     }
-
-    public Animal(int id, String nombre, String tipo, String genero, int edad) {
+    
+    public Animal(int id, String nombre, String tipo, String genero, Calendar fechaNacimiento, Calendar fechaCreacion, boolean adoptado) {
         this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
         this.genero = genero;
-        this.edad = edad;
+        this.fechaNacimiento = fechaNacimiento;
+        this.fechaCreacion = fechaCreacion;
+        this.adoptado = adoptado;
     }
 
-    
     // getters y setters
-
     public int getId() {
         return id;
     }
@@ -58,12 +61,28 @@ public class Animal {
         this.tipo = tipo;
     }
 
-    public int getEdad() {
-        return edad;
+    public String getGenero() {
+        return genero;
     }
 
-    public void setEdad(int edad) {
-        this.edad = edad;
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public Calendar getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Calendar fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public Calendar getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(Calendar fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 
     public boolean isAdoptado() {
@@ -73,15 +92,5 @@ public class Animal {
     public void setAdoptado(boolean adoptado) {
         this.adoptado = adoptado;
     }
-
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
-    }
-    
-    
-    
+        
 }

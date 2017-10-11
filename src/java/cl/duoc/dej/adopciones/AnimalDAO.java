@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -33,7 +35,7 @@ public class AnimalDAO {
     }
 
     public Animal crearAnimal(Animal a) {
-        String sql = "INSERT INTO adopciones(nombre, tipo, genero, edad) VALUES(?, ?, ?, ?);";
+        String sql = "INSERT INTO adopciones(nombre, tipo, genero, nacimiento, fecha_creacion, adoptado) VALUES(?, ?, ?, ?, ?, ?);";
         PreparedStatement prepareStatement = null;
         try {
             prepareStatement = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -41,7 +43,9 @@ public class AnimalDAO {
             prepareStatement.setString(1, a.getNombre());
             prepareStatement.setString(2, a.getTipo());
             prepareStatement.setString(3, a.getGenero());
-            prepareStatement.setInt(4, a.getEdad());
+            prepareStatement.setDate(4, new java.sql.Date(a.getFechaNacimiento().getTimeInMillis()));
+            prepareStatement.setTimestamp(5, new Timestamp(a.getFechaCreacion().getTimeInMillis()) );
+            prepareStatement.setBoolean(6, a.isAdoptado());
             // ejecuta
             prepareStatement.executeUpdate();
             // recupera
@@ -78,8 +82,12 @@ public class AnimalDAO {
                 String nombre = rs.getString("nombre");
                 String genero = rs.getString("genero");
                 String tipo = rs.getString("tipo");
-                int edad = rs.getInt("edad");
-                Animal animal = new Animal(id, nombre, tipo, genero, edad);
+                Calendar fechaNacimiento = Calendar.getInstance();
+                fechaNacimiento.setTimeInMillis( rs.getDate("nacimiento").getTime() );
+                Calendar fechaCreacion = Calendar.getInstance();
+                fechaCreacion.setTimeInMillis(rs.getTimestamp("fecha_creacion").getTime());
+                boolean adoptado = rs.getBoolean("adoptado");
+                Animal animal = new Animal(id, nombre, tipo, genero, fechaNacimiento, fechaCreacion, adoptado);
                 listaAnimales.add(animal);
             }
             return listaAnimales;
@@ -108,7 +116,8 @@ public class AnimalDAO {
                     + "	, nombre VARCHAR(255) NOT NULL\n"
                     + "	, tipo VARCHAR(255) NOT NULL\n"
                     + "	, genero VARCHAR(255) NOT NULL\n"
-                    + "	, edad INT NOT NULL\n"
+                    + "	, nacimiento DATE NOT NULL\n"
+                    + "	, fecha_creacion TIMESTAMP NOT NULL\n"
                     + "	, adoptado BOOLEAN NOT NULL DEFAULT FALSE\n"
                     + ");";
             PreparedStatement prepareStatement = conexion.prepareStatement(sql);

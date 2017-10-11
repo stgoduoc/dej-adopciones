@@ -4,6 +4,7 @@
     Author     : Santiago Neira <sant.neira@profesor.duoc.cl>
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -37,7 +38,8 @@
                             <th>Nombre</th>
                             <th>Tipo</th>
                             <th>Género</th>
-                            <th>Edad</th>
+                            <th>Fecha Nacimiento</th>
+                            <th>Fecha Creación</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
@@ -49,7 +51,12 @@
                                 <td>${a.nombre}</td>
                                 <td>${a.tipo}</td>
                                 <td>${a.genero}</td>
-                                <td>${a.edad}</td>
+                                <td>
+                                    <fmt:formatDate value="${a.fechaNacimiento.time}" pattern="dd MMMM yyyy" />
+                                </td>
+                                <td>
+                                    <fmt:formatDate value="${a.fechaCreacion.time}" pattern="yyyy-MM-dd HH:mm" />
+                                </td>
                                 <td>${a.adoptado?"NO disponible":"Disponible"}</td>
                                 <td>
                                     <form method="get" action="borrar">
