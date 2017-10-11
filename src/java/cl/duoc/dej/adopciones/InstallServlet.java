@@ -2,6 +2,7 @@ package cl.duoc.dej.adopciones;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -52,17 +53,26 @@ public class InstallServlet extends HttpServlet {
 
     private boolean cargar() {
         List<Animal> animales = new ArrayList<>();
-        animales.add(new Animal("Thor", "perro", "macho", 2));
-        animales.add(new Animal("Rocky", "perro", "macho", 3));
-        animales.add(new Animal("Flor", "perro", "hembra", 1));
-        animales.add(new Animal("Chola", "perro", "hembra", 9));
-        animales.add(new Animal("Pelusa", "gato", "hembra", 2));
-        animales.add(new Animal("Niki", "gato", "hembra", 1));
-        animales.add(new Animal("Bellota", "gato", "hembra", 3));
-        animales.add(new Animal("Evelyn", "perro", "hembra", 3));
-        animales.add(new Animal("Doris", "gato", "hembra", 1));
-        animales.add(new Animal("Sebastian", "perro", "macho", 0));
-        animales.add(new Animal("Kiba", "perro", "hembra", 2));
+        Calendar fechaNacimiento2 = Calendar.getInstance();
+        fechaNacimiento2.add(Calendar.YEAR, -2);
+        Calendar fechaNacimiento3 = Calendar.getInstance();
+        fechaNacimiento3.add(Calendar.YEAR, -3);
+        Calendar fechaNacimiento4 = Calendar.getInstance();
+        fechaNacimiento4.add(Calendar.YEAR, -4);
+        
+        Animal thor = new Animal("Thor", "perro", "macho", fechaNacimiento2);
+        thor.setAdoptado(true);
+        animales.add(thor);
+        animales.add(new Animal("Rocky", "perro", "macho", fechaNacimiento3));
+        animales.add(new Animal("Flor", "perro", "hembra", fechaNacimiento4));
+        animales.add(new Animal("Chola", "perro", "hembra", fechaNacimiento2));
+        animales.add(new Animal("Pelusa", "gato", "hembra", fechaNacimiento4));
+        animales.add(new Animal("Niki", "gato", "hembra", fechaNacimiento3));
+        animales.add(new Animal("Bellota", "gato", "hembra", fechaNacimiento3));
+        animales.add(new Animal("Evelyn", "perro", "hembra", fechaNacimiento4));
+        animales.add(new Animal("Doris", "gato", "hembra", fechaNacimiento2));
+        animales.add(new Animal("Sebastian", "perro", "macho", fechaNacimiento2));
+        animales.add(new Animal("Kiba", "perro", "hembra", fechaNacimiento4));
 
         AnimalDAO animalDAO = new AnimalDAO();
         for (Animal a : animales) {
