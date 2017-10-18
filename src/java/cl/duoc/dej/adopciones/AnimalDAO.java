@@ -1,13 +1,15 @@
 package cl.duoc.dej.adopciones;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,7 +37,7 @@ public class AnimalDAO {
     }
 
     public Animal crearAnimal(Animal a) {
-        String sql = "INSERT INTO adopciones(nombre, tipo, genero, nacimiento, fecha_creacion, adoptado) VALUES(?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO adopciones(nombre, tipo, genero, edad, fecha_nacimiento) VALUES(?, ?, ?, ?, ?);";
         PreparedStatement prepareStatement = null;
         try {
             prepareStatement = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -43,9 +45,8 @@ public class AnimalDAO {
             prepareStatement.setString(1, a.getNombre());
             prepareStatement.setString(2, a.getTipo());
             prepareStatement.setString(3, a.getGenero());
-            prepareStatement.setDate(4, new java.sql.Date(a.getFechaNacimiento().getTimeInMillis()));
-            prepareStatement.setTimestamp(5, new Timestamp(a.getFechaCreacion().getTimeInMillis()) );
-            prepareStatement.setBoolean(6, a.isAdoptado());
+            prepareStatement.setInt(4, a.getEdad());
+            prepareStatement.setDate(5, new java.sql.Date(a.getFechaNacimiento().getTimeInMillis()));
             // ejecuta
             prepareStatement.executeUpdate();
             // recupera
@@ -82,12 +83,13 @@ public class AnimalDAO {
                 String nombre = rs.getString("nombre");
                 String genero = rs.getString("genero");
                 String tipo = rs.getString("tipo");
-                Calendar fechaNacimiento = Calendar.getInstance();
-                fechaNacimiento.setTimeInMillis( rs.getDate("nacimiento").getTime() );
-                Calendar fechaCreacion = Calendar.getInstance();
-                fechaCreacion.setTimeInMillis(rs.getTimestamp("fecha_creacion").getTime());
-                boolean adoptado = rs.getBoolean("adoptado");
-                Animal animal = new Animal(id, nombre, tipo, genero, fechaNacimiento, fechaCreacion, adoptado);
+                int edad = rs.getInt("edad");
+                
+                Date dateFechaNacimiento = rs.getDate("fecha_nacimiento");
+                Calendar calendarFechaNacimiento = Calendar.getInstance();
+                calendarFechaNacimiento.setTimeInMillis(dateFechaNacimiento.getTime());
+                
+                Animal animal = new Animal(id, nombre, tipo, genero, edad, calendarFechaNacimiento);
                 listaAnimales.add(animal);
             }
             return listaAnimales;
@@ -116,9 +118,9 @@ public class AnimalDAO {
                     + "	, nombre VARCHAR(255) NOT NULL\n"
                     + "	, tipo VARCHAR(255) NOT NULL\n"
                     + "	, genero VARCHAR(255) NOT NULL\n"
-                    + "	, nacimiento DATE NOT NULL\n"
-                    + "	, fecha_creacion TIMESTAMP NOT NULL\n"
+                    + "	, edad INT NOT NULL\n"
                     + "	, adoptado BOOLEAN NOT NULL DEFAULT FALSE\n"
+                    + " , fecha_nacimiento DATE NOT NULL"
                     + ");";
             PreparedStatement prepareStatement = conexion.prepareStatement(sql);
             prepareStatement.execute();
@@ -127,6 +129,37 @@ public class AnimalDAO {
             System.err.println(e.getMessage());
         }
         return false;
+    }
+
+    List<Animal> buscarAnimales(String nombreBuscado) {
+        Logger logger = Logger.getLogger(this.getClass().getSimpleName());
+        try {
+            PreparedStatement prepareStatement = 
+                    conexion.prepareStatement("SELECT * FROM adopciones WHERE LOWER(nombre) LIKE ? ORDER BY id DESC");
+            prepareStatement.setString(1, "%"+nombreBuscado.toLowerCase()+"%");
+            ResultSet rs = prepareStatement.executeQuery();
+            List<Animal> listaAnimales = new ArrayList<>();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nombre = rs.getString("nombre");
+                String genero = rs.getString("genero");
+                String tipo = rs.getString("tipo");
+                int edad = rs.getInt("edad");
+                
+                Date dateFechaNacimiento = rs.getDate("fecha_nacimiento");
+                Calendar calendarFechaNacimiento = Calendar.getInstance();
+                calendarFechaNacimiento.setTimeInMillis(dateFechaNacimiento.getTime());
+                
+                Animal animal = new Animal(id, nombre, tipo, genero, edad, calendarFechaNacimiento);
+                listaAnimales.add(animal);
+            }
+            logger.log(Level.INFO, String.format("Se encontraron %s animales en la búsqueda."
+                        , listaAnimales.size()));
+            return listaAnimales;
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
+        }
+        return null;
     }
 
 }

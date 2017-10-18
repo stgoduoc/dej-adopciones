@@ -8,16 +8,16 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <li class="nav-item${pageContext.request.servletPath=='/index.jsp'?' active ':''}">
+            <li class="nav-item active">
                 <a class="nav-link" href="index.jsp">Home</a>
             </li>
-            <li class="nav-item${pageContext.request.servletPath=='/install.jsp'?' active ':''}">
+            <li class="nav-item">
                 <a class="nav-link" href="install.jsp">Instalación</a>
             </li>
-            <li class="nav-item${pageContext.request.servletPath=='/WEB-INF/jsp/listar.jsp'?' active ':''}">
+            <li class="nav-item">
                 <a class="nav-link" href="listar">Listar</a>
             </li>
-            <li class="nav-item${pageContext.request.servletPath=='/crear.jsp'?' active ':''}">
+            <li class="nav-item">
                 <a class="nav-link" href="crear.jsp">Crear</a>
             </li>
         </ul>

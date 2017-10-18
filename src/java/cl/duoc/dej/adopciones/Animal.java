@@ -12,31 +12,37 @@ public class Animal {
     private String nombre;
     private String tipo;
     private String genero;
-    private Calendar fechaNacimiento;
-    private Calendar fechaCreacion = Calendar.getInstance();
+    private int edad;
     private boolean adoptado = false;
+    private Calendar fechaNacimiento;
+    
+    {
+        fechaNacimiento = Calendar.getInstance();
+        fechaNacimiento.set(Calendar.YEAR, -1);
+    }
 
     public Animal() {
     }
 
-    public Animal(String nombre, String tipo, String genero, Calendar fechaNacimiento) {
+    public Animal(String nombre, String tipo, String genero, int edad) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.genero = genero;
-        this.fechaNacimiento = fechaNacimiento;
+        this.edad = edad;
     }
-    
-    public Animal(int id, String nombre, String tipo, String genero, Calendar fechaNacimiento, Calendar fechaCreacion, boolean adoptado) {
+
+    public Animal(int id, String nombre, String tipo, String genero, int edad, Calendar fechaNacimiento) {
         this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
         this.genero = genero;
+        this.edad = edad;
         this.fechaNacimiento = fechaNacimiento;
-        this.fechaCreacion = fechaCreacion;
-        this.adoptado = adoptado;
     }
 
+    
     // getters y setters
+
     public int getId() {
         return id;
     }
@@ -61,6 +67,22 @@ public class Animal {
         this.tipo = tipo;
     }
 
+    public int getEdad() {
+        return edad;
+    }
+
+    public void setEdad(int edad) {
+        this.edad = edad;
+    }
+
+    public boolean isAdoptado() {
+        return adoptado;
+    }
+
+    public void setAdoptado(boolean adoptado) {
+        this.adoptado = adoptado;
+    }
+
     public String getGenero() {
         return genero;
     }
@@ -76,21 +98,7 @@ public class Animal {
     public void setFechaNacimiento(Calendar fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-
-    public Calendar getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(Calendar fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public boolean isAdoptado() {
-        return adoptado;
-    }
-
-    public void setAdoptado(boolean adoptado) {
-        this.adoptado = adoptado;
-    }
-        
+    
+    
+    
 }

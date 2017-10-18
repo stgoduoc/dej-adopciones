@@ -1,7 +1,6 @@
 package cl.duoc.dej.adopciones;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,8 +17,17 @@ public class ListarServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String nombreBuscado = req.getParameter("nombre");        
         AnimalDAO animalDAO = new AnimalDAO();
-        List<Animal> animales = animalDAO.getAnimales();
+        List<Animal> animales;
+        
+        if(nombreBuscado != null && nombreBuscado.length() > 2) {
+            // método DAO para buscar
+            animales = animalDAO.buscarAnimales(nombreBuscado);
+        } else {
+            animales = animalDAO.getAnimales();    
+        }
+        
         req.setAttribute("animales", animales);
         req.getRequestDispatcher("/WEB-INF/jsp/listar.jsp").forward(req, resp);
     }

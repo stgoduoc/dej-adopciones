@@ -31,6 +31,11 @@
             </c:if>
 
             <c:if test="${!empty animales}">
+                <form action="listar" method="GET">
+                    <input type="text" name="nombre" 
+                           placeholder="Escriba el nombre del animal a buscar" />
+                    <button type="submit">Buscar</button>
+                </form>                
                 <table class="table table-striped">
                     <thead class="thead-inverse">
                         <tr>
@@ -38,8 +43,7 @@
                             <th>Nombre</th>
                             <th>Tipo</th>
                             <th>Género</th>
-                            <th>Fecha Nacimiento</th>
-                            <th>Fecha Creación</th>
+                            <th>Nacimiento</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
@@ -52,10 +56,7 @@
                                 <td>${a.tipo}</td>
                                 <td>${a.genero}</td>
                                 <td>
-                                    <fmt:formatDate value="${a.fechaNacimiento.time}" pattern="dd MMMM yyyy" />
-                                </td>
-                                <td>
-                                    <fmt:formatDate value="${a.fechaCreacion.time}" pattern="yyyy-MM-dd HH:mm" />
+                                    <fmt:formatDate value="${a.fechaNacimiento.time}" />
                                 </td>
                                 <td>${a.adoptado?"NO disponible":"Disponible"}</td>
                                 <td>

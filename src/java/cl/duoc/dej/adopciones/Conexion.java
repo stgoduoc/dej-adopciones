@@ -21,7 +21,7 @@ public class Conexion {
             Class.forName("com.mysql.jdbc.Driver");
             Properties properties = new Properties();
             properties.put("user", "root");
-            properties.put("password", "Duocadmin2017");
+            properties.put("password", "");
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/adopcion", properties);
             return connection;
         } catch (ClassNotFoundException cnfe) {
